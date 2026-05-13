@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Word Universe — See your knowledge as a galaxy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/d3@7.8.5/dist/d3.min.js"></script>
+</head>
+<body>
+
+<div class="app">
+  <!-- Top Bar -->
+  <header class="topbar">
+    <a href="../index.html" class="topbar-logo">
+      <svg viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="12" r="2" fill="#6B7FD7"/>
+        <circle cx="12" cy="12" r="5" stroke="#6B7FD7" stroke-width="0.75" opacity="0.5"/>
+        <circle cx="12" cy="12" r="9" stroke="#6B7FD7" stroke-width="0.5" opacity="0.25"/>
+        <circle cx="12" cy="12" r="12" stroke="#6B7FD7" stroke-width="0.3" opacity="0.15"/>
+      </svg>
+      Word Universe
+    </a>
+    <div class="topbar-controls">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="learning">Learning</button>
+      <button class="filter-btn" data-filter="mastered">Mastered</button>
+    </div>
+  </header>
+
+  <!-- Graph Canvas -->
+  <main class="graph-canvas">
+    <div id="graph-container"></div>
+  </main>
+
+  <!-- Cluster Legend -->
+  <div class="cluster-legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#6B7FD7"></div>Concrete</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#9B8ACB"></div>Abstract</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#E07A4A"></div>Action</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#5B9A6B"></div>Nature</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#D47F7F"></div>Social</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#C9A84C"></div>Mastered</div>
+  </div>
+</div>
+
+<!-- FAB -->
+<button class="fab" id="fab-add" title="Add word (Ctrl+N)">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+    <line x1="12" y1="5" x2="12" y2="19"/>
+    <line x1="5" y1="12" x2="19" y2="12"/>
+  </svg>
+</button>
+
+<!-- Add Word Modal -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal-card">
+    <div class="modal-header">
+      <span class="modal-title">Add a word</span>
+      <button class="modal-close" id="modal-close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <form id="add-form">
+      <div class="form-group">
+        <label class="form-label" for="word-input">Word</label>
+        <input class="form-input" id="word-input" type="text" placeholder="ephemeral" required maxlength="60" autocomplete="off">
+      </div>
+      <div class="form-row form-group">
+        <div>
+          <label class="form-label" for="language-select">Language</label>
+          <select class="form-select" id="language-select">
+            <option value="en">English</option>
+            <option value="zh">中文</option>
+            <option value="es">Español</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label" for="tags-input">Tags</label>
+          <input class="form-input" id="tags-input" type="text" placeholder="adjective, time, philosophy">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="definition-input">Definition</label>
+        <input class="form-input" id="definition-input" type="text" placeholder="lasting for a very short time" maxlength="200">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="example-input">Example sentence</label>
+        <textarea class="form-textarea" id="example-input" placeholder="Fame in the age of social media is often ephemeral." maxlength="300"></textarea>
+        <p class="modal-hint">OpenAI API key optional — enables real embeddings. Stored locally only.</p>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-ghost" id="modal-close-btn">Cancel</button>
+        <button type="submit" class="btn-primary">Add to Universe</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Word Detail Panel -->
+<div class="word-panel" id="word-panel">
+  <div class="panel-header">
+    <div class="panel-word-title">
+      <span class="panel-word" id="panel-word">word</span>
+      <span class="panel-lang" id="panel-language">EN</span>
+    </div>
+    <button class="panel-close" id="panel-close">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </div>
+  <div class="panel-body">
+    <div class="panel-meta">
+      <div class="panel-meta-item">
+        <div class="panel-meta-label">Cluster</div>
+        <div class="panel-meta-value" id="panel-cluster">—</div>
+      </div>
+      <div class="panel-meta-item">
+        <div class="panel-meta-label">Added</div>
+        <div class="panel-meta-value" id="panel-date">—</div>
+      </div>
+    </div>
+    <div class="panel-section">
+      <div class="panel-section-label">Definition</div>
+      <div class="panel-section-text" id="panel-definition">—</div>
+    </div>
+    <div class="panel-section">
+      <div class="panel-section-label">Example</div>
+      <div class="panel-section-text" id="panel-example">—</div>
+    </div>
+    <div class="panel-section">
+      <div class="panel-section-label">Tags</div>
+      <div class="panel-section-text" id="panel-tags">—</div>
+    </div>
+    <div class="mastery-row">
+      <span class="mastery-label">Mastery</span>
+      <div class="mastery-btns">
+        <button class="mastery-btn" id="mastery-0" data-level="0">0</button>
+        <button class="mastery-btn" id="mastery-1" data-level="1">1</button>
+        <button class="mastery-btn" id="mastery-2" data-level="2">2</button>
+        <button class="mastery-btn active" id="mastery-3" data-level="3">3</button>
+      </div>
+    </div>
+  </div>
+  <div class="panel-danger">
+    <button class="panel-danger-btn" id="word-delete">Remove from universe</button>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
