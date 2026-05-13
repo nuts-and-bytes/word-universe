@@ -396,3 +396,163 @@ body {
   .word-panel { width: 100%; }
   .form-row { grid-template-columns: 1fr; }
 }
+
+
+/* ── Language Toggle ─────────────────────────────────────────────────── */
+.lang-toggle {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 9999px;
+  padding: 0.3rem 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.05em;
+  color: rgba(228,228,231,0.4);
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.lang-toggle:hover { color: var(--star-white); border-color: rgba(255,255,255,0.18); }
+
+.topbar-center { display: flex; gap: 0.5rem; align-items: center; }
+
+/* ── Graph Empty State ────────────────────────────────────────────── */
+.graph-empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  color: var(--cosmic-dust);
+  animation: float-seed 3s ease-in-out infinite;
+}
+.graph-empty svg { opacity: 0.5; }
+.graph-empty-title { font-size: 0.9375rem; text-align: center; line-height: 1.6; }
+
+@keyframes float-seed {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* ── Guide Overlay ──────────────────────────────────────────────────── */
+.guide-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: rgba(13,13,18,0.92);
+  backdrop-filter: blur(16px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+.guide-overlay.active { opacity: 1; pointer-events: all; }
+
+.guide-card {
+  background: var(--nebula-surface);
+  border: 1px solid var(--whisper-border-strong);
+  border-radius: 1.5rem;
+  padding: 2.5rem;
+  max-width: 440px;
+  width: 100%;
+  box-shadow: 0 32px 100px rgba(0,0,0,0.8);
+  transform: scale(0.95) translateY(10px);
+  transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
+}
+.guide-overlay.active .guide-card { transform: scale(1) translateY(0); }
+
+.guide-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+.guide-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cluster-blue);
+}
+.guide-num {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: rgba(228,228,231,0.2);
+  letter-spacing: 0.08em;
+}
+
+.guide-steps { display: flex; gap: 0.5rem; margin-bottom: 2rem; }
+.guide-dot {
+  width: 24px; height: 4px;
+  border-radius: 2px;
+  background: rgba(255,255,255,0.08);
+  transition: background 0.2s;
+}
+.guide-dot.active { background: var(--cluster-blue); }
+
+.guide-step-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--star-white);
+  margin-bottom: 0.75rem;
+  line-height: 1.2;
+}
+.guide-step-desc {
+  font-size: 0.9375rem;
+  color: rgba(228,228,231,0.5);
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+.guide-actions { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.guide-skip {
+  background: transparent;
+  border: none;
+  color: rgba(228,228,231,0.3);
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: color 0.15s;
+}
+.guide-skip:hover { color: rgba(228,228,231,0.6); }
+
+.guide-next {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.375rem;
+  background: var(--cluster-blue);
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.guide-next:hover { background: #828fef; transform: translateY(-1px); }
+
+/* ── Toast ─────────────────────────────────────────────────────────── */
+.toast {
+  position: fixed;
+  bottom: 5rem; left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: var(--nebula-surface);
+  border: 1px solid var(--whisper-border-strong);
+  color: var(--star-white);
+  font-size: 0.875rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
+  opacity: 0; pointer-events: none;
+  transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+  z-index: 600; white-space: nowrap;
+}
+.toast.visible { opacity: 1; transform: translateX(-50%) translateY(0); }

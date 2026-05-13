@@ -22,11 +22,12 @@
       </svg>
       Word Universe
     </a>
-    <div class="topbar-controls">
-      <button class="filter-btn active" data-filter="all">All</button>
-      <button class="filter-btn" data-filter="learning">Learning</button>
-      <button class="filter-btn" data-filter="mastered">Mastered</button>
+    <div class="topbar-center">
+      <button class="filter-btn active" data-filter="all" data-i18n="all">All</button>
+      <button class="filter-btn" data-filter="learning" data-i18n="learning">Learning</button>
+      <button class="filter-btn" data-filter="mastered" data-i18n="mastered">Mastered</button>
     </div>
+    <button class="lang-toggle" id="lang-toggle">EN / 中文</button>
   </header>
 
   <!-- Graph Canvas -->
@@ -36,12 +37,12 @@
 
   <!-- Cluster Legend -->
   <div class="cluster-legend">
-    <div class="legend-item"><div class="legend-dot" style="background:#6B7FD7"></div>Concrete</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#9B8ACB"></div>Abstract</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#E07A4A"></div>Action</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#5B9A6B"></div>Nature</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#D47F7F"></div>Social</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#C9A84C"></div>Mastered</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#6B7FD7"></div><span data-i18n="Concrete">Concrete</span></div>
+    <div class="legend-item"><div class="legend-dot" style="background:#9B8ACB"></div><span data-i18n="Abstract">Abstract</span></div>
+    <div class="legend-item"><div class="legend-dot" style="background:#E07A4A"></div><span data-i18n="Action">Action</span></div>
+    <div class="legend-item"><div class="legend-dot" style="background:#5B9A6B"></div><span data-i18n="Nature">Nature</span></div>
+    <div class="legend-item"><div class="legend-dot" style="background:#D47F7F"></div><span data-i18n="Social">Social</span></div>
+    <div class="legend-item"><div class="legend-dot" style="background:#C9A84C"></div><span>Mastered</span></div>
   </div>
 </div>
 
@@ -57,7 +58,7 @@
 <div class="modal-overlay" id="modal-overlay">
   <div class="modal-card">
     <div class="modal-header">
-      <span class="modal-title">Add a word</span>
+      <span class="modal-title" data-i18n="modalTitle">Add a word</span>
       <button class="modal-close" id="modal-close">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
           <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
@@ -66,12 +67,12 @@
     </div>
     <form id="add-form">
       <div class="form-group">
-        <label class="form-label" for="word-input">Word</label>
-        <input class="form-input" id="word-input" type="text" placeholder="ephemeral" required maxlength="60" autocomplete="off">
+        <label class="form-label" for="word-input" data-i18n="wordLabel">Word</label>
+        <input class="form-input" id="word-input" type="text" data-i18n-placeholder="wordPlaceholder" placeholder="ephemeral" required maxlength="60" autocomplete="off">
       </div>
       <div class="form-row form-group">
         <div>
-          <label class="form-label" for="language-select">Language</label>
+          <label class="form-label" for="language-select" data-i18n="languageLabel">Language</label>
           <select class="form-select" id="language-select">
             <option value="en">English</option>
             <option value="zh">中文</option>
@@ -80,22 +81,22 @@
           </select>
         </div>
         <div>
-          <label class="form-label" for="tags-input">Tags</label>
-          <input class="form-input" id="tags-input" type="text" placeholder="adjective, time, philosophy">
+          <label class="form-label" for="tags-input" data-i18n="tagsLabel">Tags</label>
+          <input class="form-input" id="tags-input" type="text" data-i18n-placeholder="tagsPlaceholder" placeholder="adjective, time, philosophy">
         </div>
       </div>
       <div class="form-group">
-        <label class="form-label" for="definition-input">Definition</label>
-        <input class="form-input" id="definition-input" type="text" placeholder="lasting for a very short time" maxlength="200">
+        <label class="form-label" for="definition-input" data-i18n="definitionLabel">Definition</label>
+        <input class="form-input" id="definition-input" type="text" data-i18n-placeholder="definitionPlaceholder" placeholder="lasting for a very short time" maxlength="200">
       </div>
       <div class="form-group">
-        <label class="form-label" for="example-input">Example sentence</label>
-        <textarea class="form-textarea" id="example-input" placeholder="Fame in the age of social media is often ephemeral." maxlength="300"></textarea>
-        <p class="modal-hint">OpenAI API key optional — enables real embeddings. Stored locally only.</p>
+        <label class="form-label" for="example-input" data-i18n="exampleLabel">Example sentence</label>
+        <textarea class="form-textarea" id="example-input" data-i18n-placeholder="examplePlaceholder" placeholder="Fame in social media is often ephemeral." maxlength="300"></textarea>
+        <p class="modal-hint" data-i18n="apiHint">OpenAI API key optional — enables real embeddings. Stored locally only.</p>
       </div>
       <div class="modal-actions">
-        <button type="button" class="btn-ghost" id="modal-close-btn">Cancel</button>
-        <button type="submit" class="btn-primary">Add to Universe</button>
+        <button type="button" class="btn-ghost" id="modal-close-btn" data-i18n="cancel">Cancel</button>
+        <button type="submit" class="btn-primary" data-i18n="addToUniverse">Add to Universe</button>
       </div>
     </form>
   </div>
@@ -117,28 +118,28 @@
   <div class="panel-body">
     <div class="panel-meta">
       <div class="panel-meta-item">
-        <div class="panel-meta-label">Cluster</div>
+        <div class="panel-meta-label" data-i18n="cluster">Cluster</div>
         <div class="panel-meta-value" id="panel-cluster">—</div>
       </div>
       <div class="panel-meta-item">
-        <div class="panel-meta-label">Added</div>
+        <div class="panel-meta-label" data-i18n="added">Added</div>
         <div class="panel-meta-value" id="panel-date">—</div>
       </div>
     </div>
     <div class="panel-section">
-      <div class="panel-section-label">Definition</div>
+      <div class="panel-section-label" data-i18n="definition">Definition</div>
       <div class="panel-section-text" id="panel-definition">—</div>
     </div>
     <div class="panel-section">
-      <div class="panel-section-label">Example</div>
+      <div class="panel-section-label" data-i18n="example">Example</div>
       <div class="panel-section-text" id="panel-example">—</div>
     </div>
     <div class="panel-section">
-      <div class="panel-section-label">Tags</div>
+      <div class="panel-section-label" data-i18n="tags">Tags</div>
       <div class="panel-section-text" id="panel-tags">—</div>
     </div>
     <div class="mastery-row">
-      <span class="mastery-label">Mastery</span>
+      <span class="mastery-label" data-i18n="mastery">Mastery</span>
       <div class="mastery-btns">
         <button class="mastery-btn" id="mastery-0" data-level="0">0</button>
         <button class="mastery-btn" id="mastery-1" data-level="1">1</button>
@@ -148,7 +149,28 @@
     </div>
   </div>
   <div class="panel-danger">
-    <button class="panel-danger-btn" id="word-delete">Remove from universe</button>
+    <button class="panel-danger-btn" id="word-delete" data-i18n="removeFromUniverse">Remove from universe</button>
+  </div>
+</div>
+
+<!-- Guide Overlay -->
+<div class="guide-overlay" id="guide-overlay">
+  <div class="guide-card">
+    <div class="guide-header">
+      <span class="guide-eyebrow">Word Universe</span>
+      <span class="guide-num" id="guide-num">01</span>
+    </div>
+    <div class="guide-steps">
+      <div class="guide-dot active" data-step="0"></div>
+      <div class="guide-dot" data-step="1"></div>
+      <div class="guide-dot" data-step="2"></div>
+    </div>
+    <h2 class="guide-step-title" id="guide-step-title">Add words you are learning</h2>
+    <p class="guide-step-desc" id="guide-step-desc">Type a word, its definition, and an example sentence. Each word becomes a star in your universe.</p>
+    <div class="guide-actions">
+      <button class="guide-skip" id="guide-skip">Skip</button>
+      <button class="guide-next" id="guide-next">Add my first word</button>
+    </div>
   </div>
 </div>
 
