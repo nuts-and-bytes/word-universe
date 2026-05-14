@@ -419,28 +419,67 @@
         }));
 
     node.append('circle')
+      .attr('class', 'node-glow')
       .attr('r', function(d) { return getRadius(d) + 5; })
       .attr('fill', function(d) { return d.masteryLevel >= 3 ? goldColor : (clusterColors[d.cluster] || clusterColors.concrete); })
       .attr('opacity', 0.12);
 
     node.append('circle')
+      .attr('class', 'node-circle')
       .attr('r', function(d) { return getRadius(d); })
       .attr('fill', function(d) { return d.masteryLevel >= 3 ? goldColor : (clusterColors[d.cluster] || clusterColors.concrete); })
       .attr('opacity', function(d) { return d.masteryLevel >= 3 ? 0.95 : 0.75; });
 
     node.append('text')
+      .attr('class', 'node-label')
       .text(function(d) { return d.word; })
       .attr('text-anchor', 'middle')
       .attr('dy', function(d) { return getRadius(d) + 14; })
-      .attr('fill', 'rgba(228,228,231,0.55)')
+      .attr('fill', 'rgba(228,228,231,0.45)')
       .attr('font-size', '10px')
+      .attr('font-weight', '400')
       .attr('font-family', 'Outfit, system-ui, sans-serif')
       .attr('pointer-events', 'none');
 
-    node.on('click', function(event, d) {
-      event.stopPropagation();
-      showWordPanel(d);
-    });
+    node
+      .on('mouseenter', function(event, d) {
+        var r = getRadius(d);
+        d3.select(this).select('.node-glow')
+          .transition().duration(150).ease(d3.easeOut)
+          .attr('r', (r + 5) * 1.5)
+          .attr('opacity', 0.28);
+        d3.select(this).select('.node-circle')
+          .transition().duration(150).ease(d3.easeOut)
+          .attr('r', r * 1.5)
+          .attr('opacity', 1);
+        d3.select(this).select('.node-label')
+          .transition().duration(150)
+          .attr('fill', 'rgba(228,228,231,0.9)')
+          .attr('font-size', '12px')
+          .attr('font-weight', '700')
+          .attr('dy', r * 1.5 + 16);
+      })
+      .on('mouseleave', function(event, d) {
+        var r = getRadius(d);
+        d3.select(this).select('.node-glow')
+          .transition().duration(150).ease(d3.easeOut)
+          .attr('r', r + 5)
+          .attr('opacity', 0.12);
+        d3.select(this).select('.node-circle')
+          .transition().duration(150).ease(d3.easeOut)
+          .attr('r', r)
+          .attr('opacity', d.masteryLevel >= 3 ? 0.95 : 0.75);
+        d3.select(this).select('.node-label')
+          .transition().duration(150)
+          .attr('fill', 'rgba(228,228,231,0.45)')
+          .attr('font-size', '10px')
+          .attr('font-weight', '400')
+          .attr('dy', r + 14);
+      })
+      .on('click', function(event, d) {
+        event.stopPropagation();
+        showWordPanel(d);
+      });
 
     simulation.on('tick', function() {
       link
@@ -555,10 +594,18 @@
       d.classList.toggle('active', i === step);
     });
 
+    // Show the visual for this step
+    [0, 1, 2].forEach(function(i) {
+      var el = document.getElementById('guide-visual-' + i);
+      if (el) el.classList.toggle('hidden', i !== step);
+    });
+
     var nextBtn = document.getElementById('guide-next');
     nextBtn.textContent = step < steps.length - 1
-      ? (step === 0 ? t('tryIt') : 'Next')
+      ? (currentLang === 'zh' ? '下一步' : 'Next')
       : t('gotIt');
+    if (step === steps.length - 1) nextBtn.textContent = t('gotIt');
+    if (step === 0) nextBtn.textContent = t('tryIt');
   }
 
   function nextGuideStep() {
