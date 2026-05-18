@@ -14,41 +14,155 @@
   <!-- Top Bar -->
   <header class="topbar">
     <a href="../index.html" class="topbar-logo">
-      <svg viewBox="0 0 24 24" fill="none">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <circle cx="12" cy="12" r="2" fill="#6B7FD7"/>
         <circle cx="12" cy="12" r="5" stroke="#6B7FD7" stroke-width="0.75" opacity="0.5"/>
         <circle cx="12" cy="12" r="9" stroke="#6B7FD7" stroke-width="0.5" opacity="0.25"/>
         <circle cx="12" cy="12" r="12" stroke="#6B7FD7" stroke-width="0.3" opacity="0.15"/>
       </svg>
-      Word Universe
+      <span class="topbar-brand">Word Universe</span>
     </a>
-    <div class="topbar-center">
-      <button class="filter-btn active" data-filter="all" data-i18n="all">All</button>
-      <button class="filter-btn" data-filter="learning" data-i18n="learning">Learning</button>
-      <button class="filter-btn" data-filter="mastered" data-i18n="mastered">Mastered</button>
+
+    <!-- Stats -->
+    <div class="topbar-stats" id="topbar-stats">
+      <div class="stat-item">
+        <span class="stat-num" id="stat-total">0</span>
+        <span class="stat-label" data-i18n="statTotal">Total</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <span class="stat-num" id="stat-learning">0</span>
+        <span class="stat-label" data-i18n="statLearning">Learning</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <span class="stat-num stat-num-gold" id="stat-mastered">0</span>
+        <span class="stat-label" data-i18n="statMastered">Mastered</span>
+      </div>
     </div>
-    <button class="lang-toggle" id="lang-toggle">EN / 中文</button>
+
+    <div class="topbar-right">
+      <!-- Search -->
+      <div class="topbar-search" id="topbar-search">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="7"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input
+          id="search-input"
+          class="search-input"
+          type="text"
+          autocomplete="off"
+          spellcheck="false"
+          data-i18n-placeholder="searchPlaceholder"
+          placeholder="Search words…"
+        >
+        <kbd class="search-kbd">⌘K</kbd>
+        <div class="search-results" id="search-results" hidden></div>
+      </div>
+
+      <!-- Mobile search trigger (icon-only) -->
+      <button class="icon-btn mobile-search-btn" id="mobile-search-btn" aria-label="Search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <circle cx="11" cy="11" r="7"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+      </button>
+
+      <!-- Settings -->
+      <button class="icon-btn" id="settings-btn" aria-label="Settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+      </button>
+
+      <button class="lang-toggle" id="lang-toggle">EN / 中文</button>
+    </div>
   </header>
 
   <!-- Graph Canvas -->
   <main class="graph-canvas">
     <div id="graph-container"></div>
+
+    <!-- Hover tooltip (one for all nodes) -->
+    <div class="star-tooltip" id="star-tooltip" hidden>
+      <div class="tooltip-head">
+        <span class="tooltip-word" id="tooltip-word"></span>
+        <span class="tooltip-lang" id="tooltip-lang"></span>
+      </div>
+      <div class="tooltip-meta">
+        <span class="tooltip-cluster" id="tooltip-cluster"></span>
+      </div>
+      <div class="tooltip-def" id="tooltip-def"></div>
+      <div class="tooltip-mastery" id="tooltip-mastery"></div>
+    </div>
+
+    <!-- Zoom toolbar -->
+    <div class="zoom-toolbar" aria-label="Zoom controls">
+      <button class="zoom-btn" id="zoom-fit" title="Fit to view">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 8V5a2 2 0 0 1 2-2h3"/>
+          <path d="M21 8V5a2 2 0 0 0-2-2h-3"/>
+          <path d="M3 16v3a2 2 0 0 0 2 2h3"/>
+          <path d="M21 16v3a2 2 0 0 1-2 2h-3"/>
+        </svg>
+      </button>
+      <div class="zoom-divider"></div>
+      <button class="zoom-btn" id="zoom-in" title="Zoom in" aria-label="Zoom in">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
+      <button class="zoom-btn" id="zoom-out" title="Zoom out" aria-label="Zoom out">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
+    </div>
   </main>
 
-  <!-- Cluster Legend -->
-  <div class="cluster-legend">
-    <div class="legend-item"><div class="legend-dot" style="background:#6B7FD7"></div><span data-i18n="Concrete">Concrete</span></div>
-    <div class="legend-item"><div class="legend-dot" style="background:#9B8ACB"></div><span data-i18n="Abstract">Abstract</span></div>
-    <div class="legend-item"><div class="legend-dot" style="background:#E07A4A"></div><span data-i18n="Action">Action</span></div>
-    <div class="legend-item"><div class="legend-dot" style="background:#5B9A6B"></div><span data-i18n="Nature">Nature</span></div>
-    <div class="legend-item"><div class="legend-dot" style="background:#D47F7F"></div><span data-i18n="Social">Social</span></div>
-    <div class="legend-item"><div class="legend-dot" style="background:#C9A84C"></div><span>Mastered</span></div>
+  <!-- Cluster Filter (replaces legend) -->
+  <div class="cluster-filter" id="cluster-filter">
+    <button class="cluster-chip active" data-cluster="__all" data-i18n-label="filterAll">
+      <span class="chip-dot chip-dot-all">
+        <span></span><span></span><span></span><span></span><span></span>
+      </span>
+      <span class="chip-label" data-i18n="filterAll">All</span>
+      <span class="chip-count" data-count-for="__all">0</span>
+    </button>
+    <button class="cluster-chip" data-cluster="concrete">
+      <span class="chip-dot" style="background:#6B7FD7"></span>
+      <span class="chip-label" data-i18n="Concrete">Concrete</span>
+      <span class="chip-count" data-count-for="concrete">0</span>
+    </button>
+    <button class="cluster-chip" data-cluster="abstract">
+      <span class="chip-dot" style="background:#9B8ACB"></span>
+      <span class="chip-label" data-i18n="Abstract">Abstract</span>
+      <span class="chip-count" data-count-for="abstract">0</span>
+    </button>
+    <button class="cluster-chip" data-cluster="action">
+      <span class="chip-dot" style="background:#E07A4A"></span>
+      <span class="chip-label" data-i18n="Action">Action</span>
+      <span class="chip-count" data-count-for="action">0</span>
+    </button>
+    <button class="cluster-chip" data-cluster="nature">
+      <span class="chip-dot" style="background:#5B9A6B"></span>
+      <span class="chip-label" data-i18n="Nature">Nature</span>
+      <span class="chip-count" data-count-for="nature">0</span>
+    </button>
+    <button class="cluster-chip" data-cluster="social">
+      <span class="chip-dot" style="background:#D47F7F"></span>
+      <span class="chip-label" data-i18n="Social">Social</span>
+      <span class="chip-count" data-count-for="social">0</span>
+    </button>
+    <button class="cluster-chip" data-cluster="__mastered">
+      <span class="chip-dot" style="background:#C9A84C"></span>
+      <span class="chip-label" data-i18n="statMastered">Mastered</span>
+      <span class="chip-count" data-count-for="__mastered">0</span>
+    </button>
   </div>
 </div>
 
 <!-- FAB -->
-<button class="fab" id="fab-add" title="Add word (Ctrl+N)">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+<button class="fab" id="fab-add" title="Add word (⌘N)" aria-label="Add word">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
     <line x1="12" y1="5" x2="12" y2="19"/>
     <line x1="5" y1="12" x2="19" y2="12"/>
   </svg>
@@ -59,7 +173,7 @@
   <div class="modal-card">
     <div class="modal-header">
       <span class="modal-title" data-i18n="modalTitle">Add a word</span>
-      <button class="modal-close" id="modal-close">
+      <button class="modal-close" id="modal-close" aria-label="Close">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
           <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
         </svg>
@@ -87,18 +201,54 @@
       </div>
       <div class="form-group">
         <label class="form-label" for="definition-input" data-i18n="definitionLabel">Definition</label>
-        <input class="form-input" id="definition-input" type="text" data-i18n-placeholder="definitionPlaceholder" placeholder="lasting for a very short time" maxlength="200">
+        <textarea class="form-textarea form-textarea-sm" id="definition-input" data-i18n-placeholder="definitionPlaceholder" placeholder="lasting for a very short time" maxlength="400"></textarea>
       </div>
       <div class="form-group">
         <label class="form-label" for="example-input" data-i18n="exampleLabel">Example sentence</label>
         <textarea class="form-textarea" id="example-input" data-i18n-placeholder="examplePlaceholder" placeholder="Fame in social media is often ephemeral." maxlength="300"></textarea>
-        <p class="modal-hint" data-i18n="apiHint">OpenAI API key optional — enables real embeddings. Stored locally only.</p>
       </div>
       <div class="modal-actions">
         <button type="button" class="btn-ghost" id="modal-close-btn" data-i18n="cancel">Cancel</button>
         <button type="submit" class="btn-primary" data-i18n="addToUniverse">Add to Universe</button>
       </div>
     </form>
+  </div>
+</div>
+
+<!-- Settings Popover -->
+<div class="popover-overlay" id="settings-overlay" hidden>
+  <div class="popover-card" role="dialog" aria-labelledby="settings-title">
+    <div class="popover-header">
+      <span class="popover-title" id="settings-title" data-i18n="settingsTitle">Settings</span>
+      <button class="modal-close" id="settings-close" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="popover-section">
+      <label class="form-label" for="api-key-input" data-i18n="apiKeyLabel">OpenAI API Key</label>
+      <div class="api-key-row">
+        <input class="form-input" id="api-key-input" type="password" placeholder="sk-..." autocomplete="off" spellcheck="false">
+        <button class="btn-ghost btn-ghost-sm" id="api-key-save" data-i18n="save">Save</button>
+      </div>
+      <p class="modal-hint" data-i18n="apiKeyHint">Optional — enables real semantic positioning. Stored locally only.</p>
+    </div>
+
+    <div class="popover-section">
+      <div class="form-label" data-i18n="shortcutsTitle">Keyboard shortcuts</div>
+      <ul class="shortcuts-list">
+        <li><kbd>⌘</kbd><kbd>K</kbd><span data-i18n="scSearch">Focus search</span></li>
+        <li><kbd>⌘</kbd><kbd>N</kbd><span data-i18n="scAdd">Add a word</span></li>
+        <li><kbd>F</kbd><span data-i18n="scFit">Fit to view</span></li>
+        <li><kbd>Esc</kbd><span data-i18n="scClose">Close panel / modal</span></li>
+      </ul>
+    </div>
+
+    <div class="popover-section popover-danger">
+      <button class="popover-danger-btn" id="reset-data" data-i18n="resetData">Reset all words</button>
+    </div>
   </div>
 </div>
 
@@ -109,12 +259,13 @@
       <span class="panel-word" id="panel-word">word</span>
       <span class="panel-lang" id="panel-language">EN</span>
     </div>
-    <button class="panel-close" id="panel-close">
+    <button class="panel-close" id="panel-close" aria-label="Close panel">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
         <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
       </svg>
     </button>
   </div>
+  <div class="panel-swipe-handle" aria-hidden="true"></div>
   <div class="panel-body">
     <div class="panel-meta">
       <div class="panel-meta-item">
@@ -125,7 +276,16 @@
         <div class="panel-meta-label" data-i18n="added">Added</div>
         <div class="panel-meta-value" id="panel-date">—</div>
       </div>
+      <div class="panel-meta-item">
+        <div class="panel-meta-label" data-i18n="lastReviewed">Last reviewed</div>
+        <div class="panel-meta-value" id="panel-reviewed">—</div>
+      </div>
+      <div class="panel-meta-item">
+        <div class="panel-meta-label" data-i18n="masteryShort">Mastery</div>
+        <div class="panel-meta-value" id="panel-mastery-label">—</div>
+      </div>
     </div>
+
     <div class="panel-section">
       <div class="panel-section-label" data-i18n="definition">Definition</div>
       <div class="panel-section-text" id="panel-definition">—</div>
@@ -138,14 +298,21 @@
       <div class="panel-section-label" data-i18n="tags">Tags</div>
       <div class="panel-section-text" id="panel-tags">—</div>
     </div>
+
     <div class="mastery-row">
       <span class="mastery-label" data-i18n="mastery">Mastery</span>
-      <div class="mastery-btns">
-        <button class="mastery-btn" id="mastery-0" data-level="0">0</button>
-        <button class="mastery-btn" id="mastery-1" data-level="1">1</button>
-        <button class="mastery-btn" id="mastery-2" data-level="2">2</button>
-        <button class="mastery-btn active" id="mastery-3" data-level="3">3</button>
+      <div class="mastery-dots" id="mastery-dots">
+        <button class="mastery-dot" data-level="0" aria-label="New"><span class="dot-pip"></span></button>
+        <button class="mastery-dot" data-level="1" aria-label="Seen"><span class="dot-pip"></span></button>
+        <button class="mastery-dot" data-level="2" aria-label="Familiar"><span class="dot-pip"></span></button>
+        <button class="mastery-dot" data-level="3" aria-label="Mastered"><span class="dot-pip"></span></button>
       </div>
+      <span class="mastery-level-text" id="mastery-level-text">—</span>
+    </div>
+
+    <div class="panel-section panel-section-similar" id="similar-section" hidden>
+      <div class="panel-section-label" data-i18n="similarWords">Similar words</div>
+      <div class="similar-list" id="similar-list"></div>
     </div>
   </div>
   <div class="panel-danger">
@@ -166,16 +333,12 @@
       <div class="guide-dot" data-step="2"></div>
     </div>
 
-    <!-- Step visuals -->
     <div class="guide-visual" id="guide-visual-0">
-      <!-- Step 1: A word becomes a star -->
       <svg viewBox="0 0 280 140" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- background dim stars -->
         <circle cx="30" cy="25" r="1.5" fill="#E4E4E7" opacity="0.15"/>
         <circle cx="250" cy="110" r="1" fill="#E4E4E7" opacity="0.12"/>
         <circle cx="210" cy="30" r="1.5" fill="#E4E4E7" opacity="0.1"/>
         <circle cx="60" cy="115" r="1" fill="#E4E4E7" opacity="0.12"/>
-        <!-- pulsing halo -->
         <circle cx="140" cy="70" r="28" fill="#6B7FD7" opacity="0.06">
           <animate attributeName="r" values="22;34;22" dur="2.2s" repeatCount="indefinite"/>
           <animate attributeName="opacity" values="0.06;0.12;0.06" dur="2.2s" repeatCount="indefinite"/>
@@ -184,11 +347,9 @@
           <animate attributeName="r" values="14;22;14" dur="2.2s" repeatCount="indefinite"/>
           <animate attributeName="opacity" values="0.1;0.18;0.1" dur="2.2s" repeatCount="indefinite"/>
         </circle>
-        <!-- core star -->
         <circle cx="140" cy="70" r="7" fill="#6B7FD7" opacity="0.9">
           <animate attributeName="r" values="5;8;5" dur="2.2s" repeatCount="indefinite"/>
         </circle>
-        <!-- word label appearing -->
         <text x="140" y="104" text-anchor="middle" font-family="Outfit,sans-serif" font-size="11" font-weight="600" fill="#E4E4E7" opacity="0">
           ephemeral
           <animate attributeName="opacity" values="0;0;0.7;0.7" keyTimes="0;0.3;0.6;1" dur="2.2s" repeatCount="indefinite"/>
@@ -197,48 +358,36 @@
     </div>
 
     <div class="guide-visual hidden" id="guide-visual-1">
-      <!-- Step 2: meaning creates shape — clusters form -->
       <svg viewBox="0 0 280 140" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- Abstract cluster (violet) -->
         <circle cx="72" cy="52" r="16" fill="#9B8ACB" opacity="0.07"/>
         <circle cx="72" cy="52" r="6" fill="#9B8ACB" opacity="0.8"><animate attributeName="cx" values="80;72;80" dur="4s" repeatCount="indefinite"/><animate attributeName="cy" values="48;52;48" dur="4s" repeatCount="indefinite"/></circle>
         <circle cx="58" cy="62" r="4.5" fill="#9B8ACB" opacity="0.65"><animate attributeName="cx" values="62;58;62" dur="3.5s" repeatCount="indefinite"/></circle>
         <circle cx="82" cy="66" r="3.5" fill="#9B8ACB" opacity="0.55"><animate attributeName="cx" values="78;82;78" dur="4.5s" repeatCount="indefinite"/></circle>
         <text x="72" y="88" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7" fill="#9B8ACB" opacity="0.5">Abstract</text>
-
-        <!-- Nature cluster (green) -->
         <circle cx="208" cy="52" r="16" fill="#5B9A6B" opacity="0.07"/>
         <circle cx="208" cy="52" r="5.5" fill="#5B9A6B" opacity="0.8"><animate attributeName="cx" values="202;208;202" dur="3.8s" repeatCount="indefinite"/></circle>
         <circle cx="220" cy="44" r="4" fill="#5B9A6B" opacity="0.65"><animate attributeName="cy" values="48;44;48" dur="4.2s" repeatCount="indefinite"/></circle>
         <circle cx="214" cy="62" r="3" fill="#5B9A6B" opacity="0.55"/>
         <text x="208" y="78" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7" fill="#5B9A6B" opacity="0.5">Nature</text>
-
-        <!-- Action cluster (orange) bottom-center -->
         <circle cx="140" cy="100" r="14" fill="#E07A4A" opacity="0.07"/>
         <circle cx="140" cy="100" r="5" fill="#E07A4A" opacity="0.8"><animate attributeName="cx" values="136;140;136" dur="3.2s" repeatCount="indefinite"/></circle>
         <circle cx="152" cy="96" r="3.5" fill="#E07A4A" opacity="0.6"><animate attributeName="cy" values="100;96;100" dur="3.7s" repeatCount="indefinite"/></circle>
         <text x="140" y="120" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7" fill="#E07A4A" opacity="0.5">Action</text>
-
-        <!-- faint edges between clusters -->
         <line x1="88" y1="60" x2="126" y2="95" stroke="#2A2A35" stroke-width="0.75"/>
         <line x1="192" y1="62" x2="154" y2="94" stroke="#2A2A35" stroke-width="0.75"/>
       </svg>
     </div>
 
     <div class="guide-visual hidden" id="guide-visual-2">
-      <!-- Step 3: mastery — star turns gold -->
       <svg viewBox="0 0 280 140" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- dim background stars at various levels -->
         <circle cx="70" cy="55" r="4" fill="#6B7FD7" opacity="0.5"/>
         <circle cx="95" cy="80" r="3" fill="#9B8ACB" opacity="0.45"/>
         <circle cx="60" cy="90" r="5" fill="#5B9A6B" opacity="0.4"/>
         <circle cx="200" cy="45" r="3.5" fill="#D47F7F" opacity="0.45"/>
         <circle cx="220" cy="75" r="4" fill="#E07A4A" opacity="0.5"/>
         <circle cx="195" cy="95" r="3" fill="#6B7FD7" opacity="0.4"/>
-        <!-- level 0–2 stars (small, dim) -->
         <circle cx="110" cy="60" r="3" fill="#6B7FD7" opacity="0.35"/>
         <circle cx="160" cy="90" r="3.5" fill="#9B8ACB" opacity="0.35"/>
-        <!-- GOLD star — mastered -->
         <circle cx="140" cy="62" r="36" fill="#C9A84C" opacity="0.05">
           <animate attributeName="r" values="28;40;28" dur="2.6s" repeatCount="indefinite"/>
           <animate attributeName="opacity" values="0.04;0.1;0.04" dur="2.6s" repeatCount="indefinite"/>
@@ -250,7 +399,6 @@
           <animate attributeName="r" values="8;11;8" dur="2.6s" repeatCount="indefinite"/>
         </circle>
         <text x="140" y="96" text-anchor="middle" font-family="Outfit,sans-serif" font-size="11" font-weight="700" fill="#C9A84C" opacity="0.85">ephemeral</text>
-        <!-- mastery badge -->
         <rect x="120" y="103" width="40" height="14" rx="7" fill="#C9A84C" opacity="0.15"/>
         <text x="140" y="113.5" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7" font-weight="500" fill="#C9A84C" opacity="0.8">MASTERED</text>
       </svg>
