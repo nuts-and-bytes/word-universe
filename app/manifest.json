@@ -1,0 +1,14 @@
+{
+  "name": "Word Universe",
+  "short_name": "Word Universe",
+  "description": "See your knowledge as a galaxy",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#040310",
+  "theme_color": "#040310",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
