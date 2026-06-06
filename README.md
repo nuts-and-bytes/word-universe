@@ -4,11 +4,11 @@
 
 Every word you learn is a star. Positioned by meaning, not alphabet. Over months, a personal constellation forms — showing you exactly how your knowledge is shaped.
 
-**[Open App →](https://zhuxinyao99-jpg.github.io/word-universe/app/)**
+**[Open App →](https://nuts-and-bytes.github.io/word-universe/app/)**
 &nbsp;&middot;&nbsp;
-**[Live Demo (Landing)](https://zhuxinyao99-jpg.github.io/word-universe/)**
+**[Live Demo (Landing)](https://nuts-and-bytes.github.io/word-universe/)**
 &nbsp;&middot;&nbsp;
-**[GitHub →](https://github.com/zhuxinyao99-jpg/word-universe)**
+**[GitHub →](https://github.com/nuts-and-bytes/word-universe)**
 
 ---
 
@@ -42,7 +42,7 @@ Word Universe/
 
 ```bash
 # Open in browser
-open https://zhuxinyao99-jpg.github.io/word-universe/app/
+open https://nuts-and-bytes.github.io/word-universe/app/
 
 # Or run locally
 npx serve .
@@ -91,4 +91,4 @@ Alphabetical word lists hide everything. But if you can see your words arranged 
 
 ## License
 
-MIT · [View on GitHub](https://github.com/zhuxinyao99-jpg/word-universe)
+MIT · [View on GitHub](https://github.com/nuts-and-bytes/word-universe)
