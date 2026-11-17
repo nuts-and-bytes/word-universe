@@ -1,6 +1,6 @@
-# 单词宇宙 · Word Universe
+# Word Universe · 词义星系
 
-把自己添加的单词画成可探索的星空，记录释义、例句和掌握程度。
+把自己添加的单词画成可探索的星空，记录释义、例句和掌握程度。个人站使用“词义星系”作为中文展示名，早期文档也称“单词宇宙”。
 
 [打开应用](https://nuts-and-bytes.github.io/word-universe/app/) · [项目首页](https://nuts-and-bytes.github.io/word-universe/) · [English](#english)
 
