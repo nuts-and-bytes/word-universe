@@ -242,13 +242,24 @@
 
   // ── Modal ─────────────────────────────────────────────────────────────────
 
-  function openAddModal() {
-    document.getElementById('modal-overlay').classList.add('active');
-    setTimeout(function(){ document.getElementById('word-input').focus(); }, 100);
+  let addModalOpener = null;
+
+  function openAddModal(opener = document.activeElement) {
+    const dialog = document.getElementById('modal-overlay');
+    if (dialog.open) return;
+    addModalOpener = opener instanceof HTMLElement && opener !== document.body
+      ? opener
+      : document.getElementById('fab-add');
+    dialog.showModal();
   }
+
   function closeModal() {
-    document.getElementById('modal-overlay').classList.remove('active');
+    const dialog = document.getElementById('modal-overlay');
+    if (!dialog.open) return;
+    dialog.close();
     document.getElementById('add-form').reset();
+    if (addModalOpener?.isConnected) addModalOpener.focus({ preventScroll: true });
+    addModalOpener = null;
   }
 
   async function submitWord() {
@@ -872,8 +883,12 @@
     });
 
     // Modal
-    const overlay = document.getElementById('modal-overlay');
-    overlay.addEventListener('click', function(e){ if (e.target === overlay) closeModal(); });
+    const dialog = document.getElementById('modal-overlay');
+    dialog.addEventListener('click', function(e){ if (e.target === dialog) closeModal(); });
+    dialog.addEventListener('cancel', function(e) {
+      e.preventDefault();
+      closeModal();
+    });
     document.getElementById('modal-close').addEventListener('click', closeModal);
     document.getElementById('modal-close-btn').addEventListener('click', closeModal);
     document.getElementById('add-form').addEventListener('submit', function(e){
@@ -882,7 +897,9 @@
     });
 
     // FAB
-    document.getElementById('fab-add').addEventListener('click', openAddModal);
+    document.getElementById('fab-add').addEventListener('click', function(e) {
+      openAddModal(e.currentTarget);
+    });
 
     // Word panel
     document.getElementById('panel-close').addEventListener('click', hideWordPanel);
@@ -932,10 +949,11 @@
 
     // Keyboard
     document.addEventListener('keydown', function(e) {
+      if (dialog.open) return;
       const inField = e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable);
 
       if (e.key === 'Escape') {
-        closeModal(); hideWordPanel(); closeGuide(); closeSettings();
+        hideWordPanel(); closeGuide(); closeSettings();
       }
       if ((e.metaKey || e.ctrlKey) && (e.key === 'k' || e.key === 'K')) {
         e.preventDefault();

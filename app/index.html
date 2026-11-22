@@ -171,7 +171,7 @@
 </div>
 
 <!-- FAB -->
-<button class="fab" id="fab-add" title="Add word (⌘N)" aria-label="Add word">
+<button class="fab" id="fab-add" title="Add word (⌘N)" aria-label="Add word" aria-haspopup="dialog">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
     <line x1="12" y1="5" x2="12" y2="19"/>
     <line x1="5" y1="12" x2="19" y2="12"/>
@@ -179,10 +179,10 @@
 </button>
 
 <!-- Add Word Modal -->
-<div class="modal-overlay" id="modal-overlay">
+<dialog class="modal-overlay" id="modal-overlay" aria-labelledby="add-word-title">
   <div class="modal-card">
     <div class="modal-header">
-      <span class="modal-title" data-i18n="modalTitle">Add a word</span>
+      <span class="modal-title" id="add-word-title" data-i18n="modalTitle">Add a word</span>
       <button class="modal-close" id="modal-close" aria-label="Close">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
           <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
@@ -192,7 +192,7 @@
     <form id="add-form">
       <div class="form-group">
         <label class="form-label" for="word-input" data-i18n="wordLabel">Word</label>
-        <input class="form-input" id="word-input" type="text" data-i18n-placeholder="wordPlaceholder" placeholder="ephemeral" required maxlength="60" autocomplete="off">
+        <input class="form-input" id="word-input" type="text" data-i18n-placeholder="wordPlaceholder" placeholder="ephemeral" required maxlength="60" autocomplete="off" autofocus>
       </div>
       <div class="form-row form-group">
         <div>
@@ -223,7 +223,7 @@
       </div>
     </form>
   </div>
-</div>
+</dialog>
 
 <!-- Settings Popover -->
 <div class="popover-overlay" id="settings-overlay" hidden>
