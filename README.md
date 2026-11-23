@@ -54,7 +54,7 @@ python3 -m http.server 8000
 - **核心文件**：`app/app.js`（词库管理、分类、语义向量与星空交互）、`app/index.html`、`app/style.css`；推送 `main` 由 [.github/workflows/pages.yml](.github/workflows/pages.yml) 自动发布到 GitHub Pages。
 - **OpenAI Embedding 说明**：仅当你在设置中主动填入自己的 OpenAI API Key 时，新增单词才会调用 `text-embedding-3-small`（截取前 16 维参与计算）并产生对应平台费用；未配置或失败时自动回退至本地启发式算法（当前未接入 MiniMax）。
 - **数据存储**：词库与设置保存在当前浏览器 `LocalStorage`，不会自动跨设备同步，清理站点数据前请及时备份。
-- **反馈与许可**：问题欢迎提 [Issue](https://github.com/nuts-and-bytes/word-universe/issues)；仓库目前未含独立 `LICENSE` 文件。
+- **反馈与许可**：问题欢迎提 [Issue](https://github.com/nuts-and-bytes/word-universe/issues)；采用 [MIT License](LICENSE)。
 
 </details>
 
